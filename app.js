@@ -46,7 +46,7 @@ Socketio.on('connection', socket => {
         players.push(player)
         units.newPlayerUnits(player.id, 3, color)
 
-        socket.emit('currentId', player.id)
+        socket.emit('currentPlayer', player)
 
         Socketio.emit('players', players)
 
