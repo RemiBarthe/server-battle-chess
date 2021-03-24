@@ -12,7 +12,10 @@ const Wall = require('./class/wall')
 const Units = require('./class/units')
 
 const COLOR_PLAYER_1 = "#1E9AE1"
+const COLOR_SECONDARY_PLAYER_1 = "#4BAEE7"
 const COLOR_PLAYER_2 = "#E1651E"
+const COLOR_SECONDARY_PLAYER_2 = "#E7844B"
+
 
 let players = []
 let units = new Units()
@@ -31,6 +34,7 @@ function getWalls(number) {
 
 const walls = getWalls(20)
 let color = COLOR_PLAYER_1
+let secondaryColor = COLOR_SECONDARY_PLAYER_1
 let pseudo = "Patrice"
 
 Socketio.on('connection', socket => {
@@ -38,14 +42,16 @@ Socketio.on('connection', socket => {
 
     let player = null
     if (players.length < 2) {
-        player = new Player(pseudo, color)
+        player = new Player(pseudo, color, secondaryColor)
         players.push(player)
         units.newPlayerUnits(player.id, 3, color)
 
         socket.emit('currentId', player.id)
+
         Socketio.emit('players', players)
 
         color = COLOR_PLAYER_2
+        secondaryColor = COLOR_SECONDARY_PLAYER_2
         pseudo = "Frank"
     }
     else {
@@ -63,7 +69,15 @@ Socketio.on('connection', socket => {
         socket.emit('selectedUnit', unit)
         socket.broadcast.emit('opponentSelectedUnit', unit)
         Socketio.emit('units', units.getUnits())
+    })
 
+    socket.on('selectUnit', unitSelectedId => {
+        units.unselectPlayer(player.id)
+        const unit = units.getUnits().find(unit => unit.id === unitSelectedId)
+        unit.selected = player.id
+        socket.emit('selectedUnit', unit)
+        socket.broadcast.emit('opponentSelectedUnit', unit)
+        Socketio.emit('units', units.getUnits())
     })
 
     socket.on('disconnect', () => {

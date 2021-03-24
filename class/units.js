@@ -28,7 +28,7 @@ class Units {
 
     unselectPlayer(playerId) {
         this.units.forEach(unit => {
-            if (unit.playerId === playerId) unit.selected = false
+            if (unit.selected === playerId) unit.selected = false
         })
     }
 }
