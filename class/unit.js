@@ -1,10 +1,10 @@
 class Unit {
-    constructor(id, playerId, color) {
+    constructor(id, playerId, color, x, y) {
         this.id = id
         this.playerId = playerId
         this.color = color
-        this.x = 40
-        this.y = 80
+        this.x = x
+        this.y = y
         this.w = 40
         this.h = 40
         this.selected = false

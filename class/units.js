@@ -5,14 +5,16 @@ class Units {
         this.units = []
     }
 
-    newUnit(unitId, playerId, color) {
-        this.units.push(new Unit(unitId, playerId, color))
+    newUnit(unitId, playerId, color, x, y) {
+        this.units.push(new Unit(unitId, playerId, color, x, y))
     }
 
-    newPlayerUnits(playerId, number, color) {
+    newPlayerUnits(playerId, number, color, x) {
+        let y = 120
         for (let i = 0; i < number; i++) {
             const unitId = parseInt(i + '' + playerId)
-            this.newUnit(unitId, playerId, color)
+            this.newUnit(unitId, playerId, color, x, y)
+            y += 240
         }
     }
 

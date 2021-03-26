@@ -33,26 +33,35 @@ function getWalls(number) {
 }
 
 const walls = getWalls(20)
-let color = COLOR_PLAYER_1
-let secondaryColor = COLOR_SECONDARY_PLAYER_1
-let pseudo = "Patrice"
+
 
 Socketio.on('connection', socket => {
+    const isSecondPlayer = socket.handshake.query.secondPlayer === 'true'
+
     Socketio.emit('walls', walls)
 
     let player = null
     if (players.length < 2) {
+
+        let color = COLOR_PLAYER_1
+        let secondaryColor = COLOR_SECONDARY_PLAYER_1
+        let pseudo = "Patrice"
+        let x = 40
+
+        if (isSecondPlayer) {
+            color = COLOR_PLAYER_2
+            secondaryColor = COLOR_SECONDARY_PLAYER_2
+            pseudo = "Frank"
+            x = 1120
+        }
+
         player = new Player(pseudo, color, secondaryColor)
         players.push(player)
-        units.newPlayerUnits(player.id, 3, color)
+        units.newPlayerUnits(player.id, 3, color, x)
 
         socket.emit('currentPlayer', player)
 
         Socketio.emit('players', players)
-
-        color = COLOR_PLAYER_2
-        secondaryColor = COLOR_SECONDARY_PLAYER_2
-        pseudo = "Frank"
     }
     else {
         socket.emit('players', players)
