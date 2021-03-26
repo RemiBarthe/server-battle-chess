@@ -19,6 +19,7 @@ const COLOR_SECONDARY_PLAYER_2 = "#E7844B"
 
 let players = []
 let units = new Units()
+let playerTurn = ""
 
 function getWalls(number) {
     let walls = []
@@ -58,16 +59,22 @@ Socketio.on('connection', socket => {
         player = new Player(pseudo, color, secondaryColor)
         players.push(player)
         units.newPlayerUnits(player.id, 3, color, x)
+        playerTurn = player
 
         socket.emit('currentPlayer', player)
-
         Socketio.emit('players', players)
+        Socketio.emit('playerTurn', playerTurn)
     }
     else {
         socket.emit('players', players)
     }
 
     Socketio.emit('units', units.getUnits())
+
+    socket.on('playerTurn', player => {
+        playerTurn = player
+        Socketio.emit('playerTurn', playerTurn)
+    })
 
     socket.on('moveUnit', (unitSelectedId, x, y) => {
         units.unselectPlayer(player.id)
