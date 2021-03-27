@@ -74,13 +74,15 @@ Socketio.on('connection', socket => {
     socket.on('playerTurn', player => {
         playerTurn = player
         Socketio.emit('playerTurn', playerTurn)
+
+        units.resetActionPoint()
+        Socketio.emit('units', units.getUnits())
     })
 
     socket.on('moveUnit', (unitSelectedId, x, y) => {
         units.unselectPlayer(player.id)
         const unit = units.getUnits().find(unit => unit.id === unitSelectedId)
-        unit.x = x
-        unit.y = y
+        unit.move(x, y)
         unit.selected = player.id
         socket.emit('selectedUnit', unit)
         socket.broadcast.emit('opponentSelectedUnit', unit)

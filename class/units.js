@@ -1,7 +1,7 @@
 const Unit = require('./unit')
 
 class Units {
-    constructor(id, idPlayer) {
+    constructor() {
         this.units = []
     }
 
@@ -31,6 +31,12 @@ class Units {
     unselectPlayer(playerId) {
         this.units.forEach(unit => {
             if (unit.selected === playerId) unit.selected = false
+        })
+    }
+
+    resetActionPoint() {
+        this.units.forEach(unit => {
+            unit.actionPoint = unit.maxActionPoint
         })
     }
 }

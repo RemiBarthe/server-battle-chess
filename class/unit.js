@@ -13,6 +13,13 @@ class Unit {
         this.maxLife = 50
         this.life = 50
         this.actionPoint = 4
+        this.maxActionPoint = 4
+    }
+
+    move(x, y) {
+        this.x = x
+        this.y = y
+        this.actionPoint--
     }
 }
 
