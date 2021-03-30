@@ -7,13 +7,14 @@ class Unit {
         this.y = y
         this.w = 40
         this.h = 40
-        this.selected = false
-        this.hovered = false
         this.movement = 100
+        this.maxActionPoint = 4
+        this.actionPoint = 4
         this.maxLife = 50
         this.life = 50
-        this.actionPoint = 4
-        this.maxActionPoint = 4
+        this.attackDistance = 60
+        this.selected = false
+        this.hovered = false
     }
 
     move(x, y) {
